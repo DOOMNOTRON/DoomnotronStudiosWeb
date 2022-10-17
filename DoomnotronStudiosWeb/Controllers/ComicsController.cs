@@ -76,6 +76,8 @@ namespace DoomnotronStudiosWeb.Controllers
 
                 };
 
+                // Tell EF that we have not modified the existing instructor
+                _context.Entry(newComic.ComicCreator).State = EntityState.Unchanged;
                 _context.Add(newComic);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
