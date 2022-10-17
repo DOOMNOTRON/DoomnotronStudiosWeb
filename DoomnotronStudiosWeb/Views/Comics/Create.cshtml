@@ -1,7 +1,20 @@
-﻿@model DoomnotronStudiosWeb.Models.Comic
+﻿@model ComicCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
+
+    List<SelectListItem> creatorsSelectList = new();
+    foreach(Creator comicCreator in Model.AllAvailableComicCreators)
+    {
+        creatorsSelectList.Add
+        (
+            new SelectListItem()
+                    {
+                        Value = comicCreator.Id.ToString(),
+                        Text = comicCreator.FullName
+                    }
+        );
+    }
 }
 
 <h1>Create</h1>
@@ -46,6 +59,14 @@
                 <label asp-for="IssueNumber" class="control-label"></label>
                 <input asp-for="IssueNumber" class="form-control" />
                 <span asp-validation-for="IssueNumber" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                <select asp-for="ChosenCreator" asp-items="creatorsSelectList" >
+                    @foreach (Creator comicCreator in Model.AllAvailableComicCreators)
+                    {
+                            <option value="@comicCreator.Id">@comicCreator.FullName</option>
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
