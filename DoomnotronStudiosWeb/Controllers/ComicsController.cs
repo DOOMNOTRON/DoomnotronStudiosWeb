@@ -46,7 +46,9 @@ namespace DoomnotronStudiosWeb.Controllers
         // GET: Comics/Create
         public IActionResult Create()
         {
-            return View();
+            ComicCreateViewModel viewModel = new();
+            viewModel.AllAvailableComicCreators = _context.Creators.OrderBy(i => i.FullName).ToList();
+            return View(viewModel);
         }
 
         // POST: Comics/Create
@@ -54,14 +56,31 @@ namespace DoomnotronStudiosWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Artist,Writer,Description,rating,ArcNumber,IssueNumber")] Comic comic)
+        public async Task<IActionResult> Create(ComicCreateViewModel comic)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(comic);
+                Comic newComic = new()
+                {
+                    Title = comic.Title,
+                    Artist = comic.Artist,
+                    Writer = comic.Writer,
+                    Description = comic.Description,
+                    rating = comic.rating,
+                    ArcNumber = comic.ArcNumber,
+                    IssueNumber = comic.IssueNumber,
+                    ComicCreator = new Creator()
+                    {
+                        Id = comic.ChosenCreator
+                    }
+
+                };
+
+                _context.Add(newComic);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            comic.AllAvailableComicCreators = _context.Creators.OrderBy(i => i.FullName).ToList();
             return View(comic);
         }
 
