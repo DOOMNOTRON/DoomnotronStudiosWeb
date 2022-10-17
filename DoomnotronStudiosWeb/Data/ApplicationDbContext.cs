@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using DoomnotronStudiosWeb.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoomnotronStudiosWeb.Data
@@ -9,5 +10,9 @@ namespace DoomnotronStudiosWeb.Data
             : base(options)
         {
         }
+
+        public DbSet<Creator> Creators { get; set; }
+
+        public DbSet<Comic> Comics { get; set; }
     }
 }
