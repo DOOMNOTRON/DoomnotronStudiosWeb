@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DoomnotronStudiosWeb.Models.Comic>
+﻿@model IEnumerable<ComicIndexViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,26 +13,12 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.DisplayNameFor(model => model.ComicTitle)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Artist)
+                @Html.DisplayNameFor(model => model.ComicCreatorName)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Writer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.rating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ArcNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IssueNumber)
-            </th>
+
             <th></th>
         </tr>
     </thead>
@@ -40,30 +26,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
+                @Html.DisplayFor(modelItem => item.ComicTitle)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Artist)
+                    @Html.DisplayFor(modelItem => item.ComicCreatorName)
             </td>
+
             <td>
-                @Html.DisplayFor(modelItem => item.Writer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.rating)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArcNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IssueNumber)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.ComicId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ComicId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ComicId">Delete</a>
             </td>
         </tr>
 }

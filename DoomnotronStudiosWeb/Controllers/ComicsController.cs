@@ -22,7 +22,18 @@ namespace DoomnotronStudiosWeb.Controllers
         // GET: Comics
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Comics.ToListAsync());
+            List<ComicIndexViewModel> ComicData = await (from c in _context.Comics
+                            join creator in _context.Creators
+                                on c.ComicCreator.Id equals creator.Id
+                            orderby c.Title
+                            select new ComicIndexViewModel
+                            {
+                                ComicId = c.Id,
+                                ComicTitle = c.Title,
+                                ComicCreatorName = creator.FullName
+                            }).ToListAsync();
+
+              return View(ComicData);
         }
 
         // GET: Comics/Details/5

@@ -57,4 +57,15 @@ namespace DoomnotronStudiosWeb.Models
         [Required]
         public int IssueNumber { get; set; }
     }
+
+    public class ComicIndexViewModel
+    {
+        public int ComicId { get; set; }
+
+        [Display(Name = " Comic Title")]
+        public string ComicTitle { get; set; }
+
+        [Display(Name = " Creator")]
+        public string ComicCreatorName { get; set; }
+    }
 }
