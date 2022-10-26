@@ -36,7 +36,7 @@ namespace DoomnotronStudiosWeb.Models
                 using DbConnection con = _context.Database.GetDbConnection();
                 await con.OpenAsync();
                 using DbCommand query = con.CreateCommand();
-                query.CommandText = "Update Comics SET CreatorId = null Where CreatorId = " + creator.Id;
+                query.CommandText = "Update Comics SET ComicCreatorId = null Where ComicCreatorId = " + creator.Id;
                 int rowsAffected = await query.ExecuteNonQueryAsync();
 
                 // Remove creator from database
