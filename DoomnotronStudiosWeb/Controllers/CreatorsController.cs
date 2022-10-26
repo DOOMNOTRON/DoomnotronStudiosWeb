@@ -12,29 +12,29 @@ namespace DoomnotronStudiosWeb.Controllers
 {
     public class CreatorsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ICreatorRepository _creatorRepo;
 
-        public CreatorsController(ApplicationDbContext context)
+        public CreatorsController(ICreatorRepository creatorRepo)
         {
-            _context = context;
+            _creatorRepo = creatorRepo;
         }
 
         // GET: Creators
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Creators.ToListAsync());
+              return View(await _creatorRepo.GetAllCreators());
         }
 
         // GET: Creators/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Creators == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var creator = await _context.Creators
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var creator = await _creatorRepo.GetCreator(id.Value);
+
             if (creator == null)
             {
                 return NotFound();
@@ -58,8 +58,7 @@ namespace DoomnotronStudiosWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(creator);
-                await _context.SaveChangesAsync();
+                await _creatorRepo.SaveCreator(creator);
                 return RedirectToAction(nameof(Index));
             }
             return View(creator);
@@ -68,12 +67,12 @@ namespace DoomnotronStudiosWeb.Controllers
         // GET: Creators/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Creators == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var creator = await _context.Creators.FindAsync(id);
+            var creator = await _creatorRepo.GetCreator(id.Value);
             if (creator == null)
             {
                 return NotFound();
@@ -97,12 +96,11 @@ namespace DoomnotronStudiosWeb.Controllers
             {
                 try
                 {
-                    _context.Update(creator);
-                    await _context.SaveChangesAsync();
+                    await _creatorRepo.UpdateCreator(creator);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CreatorExists(creator.Id))
+                    if (!await CreatorExists(creator.Id))
                     {
                         return NotFound();
                     }
@@ -119,13 +117,12 @@ namespace DoomnotronStudiosWeb.Controllers
         // GET: Creators/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Creators == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var creator = await _context.Creators
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var creator = await _creatorRepo.GetCreator(id.Value);
             if (creator == null)
             {
                 return NotFound();
@@ -139,23 +136,19 @@ namespace DoomnotronStudiosWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Creators == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Creators'  is null.");
-            }
-            var creator = await _context.Creators.FindAsync(id);
-            if (creator != null)
-            {
-                _context.Creators.Remove(creator);
-            }
             
-            await _context.SaveChangesAsync();
+            var creator = await _creatorRepo.GetCreator(id);
+
+            TempData["Message"] = $"{creator.FullName} was removed from any related comics";
+
+            // Remove creator
+            await _creatorRepo.DeleteCreator(creator.Id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CreatorExists(int id)
+        private async Task<bool> CreatorExists(int id)
         {
-          return _context.Creators.Any(e => e.Id == id);
+          return await _creatorRepo.GetCreator(id) != null;
         }
     }
 }
