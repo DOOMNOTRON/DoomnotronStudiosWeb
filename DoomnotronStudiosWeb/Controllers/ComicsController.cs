@@ -123,7 +123,7 @@ namespace DoomnotronStudiosWeb.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ComicExists(comic.Id))
+                    if (!await ComicExists(comic.Id))
                     {
                         return NotFound();
                     }
@@ -174,9 +174,9 @@ namespace DoomnotronStudiosWeb.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ComicExists(int id)
+        public async Task<bool> ComicExists(int id)
         {
-          return _context.Comics.Any(e => e.Id == id);
+            return await _context.Comics.AnyAsync(e => e.Id == id);
         }
     }
 }
