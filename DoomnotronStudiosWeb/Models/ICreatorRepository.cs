@@ -63,7 +63,7 @@ namespace DoomnotronStudiosWeb.Models
 
         public async Task UpdateCreator(Creator creator)
         {
-            _context.Add(creator);
+            _context.Update(creator);
             await _context.SaveChangesAsync();
         }
     }
