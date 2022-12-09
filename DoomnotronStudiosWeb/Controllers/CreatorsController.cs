@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DoomnotronStudiosWeb.Data;
 using DoomnotronStudiosWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DoomnotronStudiosWeb.Controllers
 {
+    [Authorize(Roles = IdentityHelper.Creator)]
     public class CreatorsController : Controller
     {
         private readonly ICreatorRepository _creatorRepo;
