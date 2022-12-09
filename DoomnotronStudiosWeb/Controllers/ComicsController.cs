@@ -13,10 +13,12 @@ namespace DoomnotronStudiosWeb.Controllers
     public class ComicsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _environment;
 
-        public ComicsController(ApplicationDbContext context)
+        public ComicsController(ApplicationDbContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
 
         // GET: Comics
@@ -60,8 +62,18 @@ namespace DoomnotronStudiosWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                string fileName = Guid.NewGuid().ToString();
+                fileName += Path.GetExtension(comic.ProductPhoto.FileName);
+
+                // Save file to the file system
+                string uploadPath = Path.Combine(_environment.WebRootPath, "images",fileName);
+                using Stream fileStream = new FileStream(uploadPath, FileMode.Create);
+                await comic.ProductPhoto.CopyToAsync(fileStream);
+
+                // Map our viewmodel to our data model (Comic), save to DB
                 Comic newComic = new()
                 {
+                    PhotoUrl= fileName,
                     Title = comic.Title,
                     Artist = comic.Artist,
                     Writer = comic.Writer,
