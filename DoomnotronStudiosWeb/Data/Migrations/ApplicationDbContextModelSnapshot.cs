@@ -63,7 +63,7 @@ namespace DoomnotronStudiosWeb.Data.Migrations
 
                     b.HasIndex("ComicCreatorId");
 
-                    b.ToTable("Comics");
+                    b.ToTable("Comics", (string)null);
                 });
 
             modelBuilder.Entity("DoomnotronStudiosWeb.Models.Creator", b =>
@@ -80,7 +80,7 @@ namespace DoomnotronStudiosWeb.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Creators");
+                    b.ToTable("Creators", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

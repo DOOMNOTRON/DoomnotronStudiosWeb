@@ -29,6 +29,8 @@ namespace DoomnotronStudiosWeb.Models
         [Required]
         public int IssueNumber { get; set; }
 
+        public string PhotoUrl { get; set; }
+
     }
 
     public class ComicCreateViewModel
@@ -56,5 +58,7 @@ namespace DoomnotronStudiosWeb.Models
 
         [Required]
         public int IssueNumber { get; set; }
+
+        public IFormFile ProductPhoto { get; set; }
     }
 }
